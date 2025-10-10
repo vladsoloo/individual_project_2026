@@ -1,11 +1,14 @@
 from django.db import models
 
 
-class Currency(models.Model):
-    char_code = models.CharField(max_lenght=3, unique=True)
-    name = models.Charfield(max_length=100)
+class ConversionRate(models.Model):
+    from_currency = models.CharField(max_length=3)
+    to_currency = models.CharField(max_length=3)
     rate = models.DecimalField(max_digits=10, decimal_places=4)
-    date = models.DateField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['from_currency', 'to_currency']
 
     def __str__(self):
-        return f"{self.char_code} ({self.name}): {self.rate}"
+        return f"{self.from_currency} to {self.to_currency}: {self.rate}"
